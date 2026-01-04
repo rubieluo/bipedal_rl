@@ -40,11 +40,11 @@ FEET_SITES = [
 ]
 
 LEFT_FEET_GEOMS = [
-    "left_foot_bottom_tpu",
+    "foot_L_visual",
 ]
 
 RIGHT_FEET_GEOMS = [
-    "right_foot_bottom_tpu",
+    "foot_R_visual",
 ]
 
 HIP_JOINT_NAMES = [
