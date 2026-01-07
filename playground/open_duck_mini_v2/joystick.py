@@ -17,6 +17,7 @@
 
 from typing import Any, Dict, Optional, Union
 import jax
+jax.config.update("jax_enable_x64", True)
 import jax.numpy as jp
 from ml_collections import config_dict
 from mujoco import mjx

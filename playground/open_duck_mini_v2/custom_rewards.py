@@ -36,14 +36,6 @@ def reward_imitation(
     angular_vel_slice_start = 25
     angular_vel_slice_end   = 28
 
-    ref_base_orientation_quat = ref_base_orientation_quat / jp.linalg.norm(
-        ref_base_orientation_quat
-    )  # normalize the quat
-    base_orientation = base_qpos[3:7]
-    base_orientation = base_orientation / jp.linalg.norm(
-        base_orientation
-    )  # normalize the quat
-
     ref_base_lin_vel = reference_frame[linear_vel_slice_start:linear_vel_slice_end]
     base_lin_vel = base_qvel[:3]
 

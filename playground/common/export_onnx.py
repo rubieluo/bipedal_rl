@@ -32,8 +32,9 @@ def export_onnx(
             self.layer_norm = layer_norm
 
             if mean_std is not None:
-                self.mean = tf.Variable(mean_std[0], trainable=False, dtype=tf.float32)
-                self.std = tf.Variable(mean_std[1], trainable=False, dtype=tf.float32)
+                # Cast the 64-bit input to 32-bit explicitly
+                self.mean = tf.Variable(tf.cast(mean_std[0], tf.float32), trainable=False, dtype=tf.float32)
+                self.std = tf.Variable(tf.cast(mean_std[1], tf.float32), trainable=False, dtype=tf.float32)
             else:
                 self.mean = None
                 self.std = None
