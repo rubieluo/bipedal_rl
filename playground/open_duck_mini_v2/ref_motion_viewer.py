@@ -38,7 +38,7 @@ parser = argparse.ArgumentParser(description="Reference Motion Viewer")
 parser.add_argument(
     "--reference_data",
     type=str,
-    default="playground/go_bdx/data/polynomial_coefficients.pkl",
+    default="playground/open_duck_mini_v2/data/polynomial_coefficients.pkl",
     help="Path to the polynomial coefficients pickle file.",
 )
 parser.add_argument(
@@ -49,7 +49,7 @@ parser.add_argument(
     "--command",
     nargs=3,
     type=float,
-    default=[0.0, -0.05, -0.1],
+    default=[0.5, 0.0, 0.0],
     help="Reference motion command as three floats: dx, dy, dtheta.",
 )
 parser.add_argument(
@@ -179,27 +179,35 @@ with mujoco.viewer.launch_passive(
             if not all(val == 0.0 for val in command):
                 imitation_i = step % PRM.nb_steps_in_period
 
-                ref_motion = PRM.get_reference_motion(
-                    command[0], command[1], command[2], imitation_i
+                # Sample the polynomial reference motion and convert to NumPy.
+                ref_motion = np.array(
+                    PRM.get_reference_motion(
+                        command[0], command[1], command[2], imitation_i
+                    )
                 )
-                ref_motion = np.array(ref_motion)
-
-                if ref_motion.shape[0] == 40:
-                    joints_pos = ref_motion[0:16]
-                    ref_joint_pos = np.concatenate([joints_pos[:9], joints_pos[11:]])
-                else:
+                # Your headless robot’s reference vector has 28 values:
+                # 10 joint positions, 10 joint velocities, 2 foot-contact flags,
+                # and 6 base velocity components:contentReference[oaicite:1]{index=1}.
+                expected_dims = 28
+                num_joints = 10
+                if ref_motion.shape[0] != expected_dims:
                     print(
-                        "Error: Unexpected reference motion dimension:",
+                        "Error: unexpected reference motion dimension:",
                         ref_motion.shape,
                     )
                     sys.exit(1)
+                # First 10 entries are joint positions.
+                ref_joint_pos = ref_motion[:num_joints]
 
                 new_qpos = default_qpos.copy()
-                if new_qpos[7 : 7 + 14].shape[0] == ref_joint_pos.shape[0]:
-                    new_qpos[7 : 7 + 14] = ref_joint_pos
+                # Actuated joints follow the 7‑DOF floating base in qpos.
+                start = 7
+                end = 7 + num_joints
+                if new_qpos[start:end].shape[0] == ref_joint_pos.shape[0]:
+                    new_qpos[start:end] = ref_joint_pos
                 else:
                     print(
-                        "Error: Actuated joint dimension mismatch. Using default pose."
+                        "Error: actuated joint dimension mismatch.  Using default pose."
                     )
                 step += 1
             else:

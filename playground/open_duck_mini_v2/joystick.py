@@ -220,6 +220,7 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
             qpos[self._floating_base_qpos_addr : self._floating_base_qpos_addr + 2]
             + dxy
         )  # x y noise
+        base_qpos = base_qpos.at[2].set(0.06)
 
         rng, key = jax.random.split(rng)
         yaw = jax.random.uniform(key, (1,), minval=-3.14, maxval=3.14)
@@ -476,6 +477,11 @@ class Joystick(open_duck_mini_v2_base.OpenDuckMiniV2Env):
                 else:
                     state.metrics[f"cost/{k}"] = -v
         state.metrics["swing_peak"] = jp.mean(state.info["swing_peak"])
+
+        # # DEBUGGING: Print the gravity Z value and the Done flag
+        # grav_z = self.get_gravity(data)[-1]
+        # jax.debug.print("Step: {x} | Gravity Z: {y} | Done: {z}", 
+        #                 x=state.info["step"], y=grav_z, z=done)
 
         done = done.astype(reward.dtype)
         state = state.replace(data=data, obs=obs, reward=reward, done=done)

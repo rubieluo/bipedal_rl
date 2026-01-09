@@ -37,9 +37,6 @@
   <compiler angle="radian" />
 
   <asset>
-    <texture name="tex-checker" type="2d" builtin="checker" width="512" height="512" rgb1="0.1216 0.2431 0.3569" rgb2="0.2431 0.3569 0.4824" mark="edge" markrgb="0.80 0.80 0.80"/>
-    <material name="mat-checker" texture="tex-checker" texrepeat="30 30" reflectance="0.2"/>
-
     <material name="empty" rgba="0.847 0.851 0.875 1" />
     <material name="collision_material" rgba="0.847 0.851 0.875 1" />
     <mesh name="base_link.STL" file="assets/base_link.STL" />
@@ -62,32 +59,32 @@
   </asset>
 
   <worldbody>
-    <light name="bright_sun" directional="true" diffuse="1 1 1" specular="0.5 0.5 0.5" pos="0 0 5" dir="0 0 -1"/>
-    <light name="fill_light" directional="false" diffuse="0.5 0.5 0.5" pos="3 3 2"/>
-    <geom name="ground" type="plane" pos="0 0 -0.05" size="10 10 0.1" material="mat-checker" contype="1" conaffinity="1" quat="1 0 0 0"/>
+    <!-- <light name="bright_sun" directional="true" diffuse="1 1 1" specular="0.5 0.5 0.5" pos="0 0 5" dir="0 0 -1"/>
+    <light name="fill_light" directional="false" diffuse="0.5 0.5 0.5" pos="3 3 2"/> -->
+    <!-- <geom name="ground" type="plane" pos="0 0 -0.05" size="10 10 0.1" material="mat-checker" contype="1" conaffinity="1" quat="1 0 0 0"/> -->
 
     <body name="trunk_assembly" pos="0.00000000 0.00000000 0.05263840" quat="1 0 0 0" childclass="motor">
       <site name="imu" pos="-0.08 -0.0 0.05"/>
       <freejoint name="floating_base" />
       <geom name="base_link_visual" pos="0 0 0" quat="1.0 0.0 0.0 0.0" material="empty" type="mesh" mesh="base_link.STL" class="visual" />
       <body name="pelvis_L" pos="0.033675 0.068612 0.09725" quat="0.707078559003656 0.7070811562529976 0.006170500342410927 0.006170477676939206">
-        <joint name="left_hip_yaw"  class="motor" axis="0 1 0" />
+        <joint name="left_hip_yaw"  class="motor" axis="0 -1 0" />
         <inertial pos="-0.000515821082482874 0.0280203001661152 -0.000118521611499556" quat="1.0 0.0 0.0 0.0" mass="0.053918886421864" diaginertia="9.40172868937262e-06 5.82011210755033e-06 8.64087999526507e-06" />
         <geom name="pelvis_L_visual" pos="0 0 0" quat="1.0 0.0 0.0 0.0" material="empty" type="mesh" mesh="pelvis_L.STL" class="visual" />
         <body name="hip_L" pos="0 0.01 0" quat="1.0 0.0 0.0 0.0">
-          <joint name="left_hip_roll"  class="motor" axis="0.99996 0 -0.0087265" />
+          <joint name="left_hip_roll"  class="motor" axis="-0.99996 0 0.0087265" />
           <inertial pos="0.0163927399253099 -6.26883108745535E-05 0.0429518547389871" quat="1.0 0.0 0.0 0.0" mass="0.0761461040659691" diaginertia="1.79303621308344e-05 2.59794268953297e-05 1.70542740636146e-05" />
           <geom name="hip_L_visual" pos="0 0 0" quat="1.0 0.0 0.0 0.0" material="empty" type="mesh" mesh="hip_L.STL" class="visual" />
           <body name="thigh_L" pos="0.041492 0.0001117 0.024957" quat="0.7071054825112363 0.0 0.0 0.7071080798594735">
-            <joint name="left_hip_pitch"  class="motor" axis="0 0 1" />
+            <joint name="left_hip_pitch"  class="motor" axis="0 0 -1" />
             <inertial pos="-0.0395824766086597 0.0051336618268176 0.0321475415340156" quat="1.0 0.0 0.0 0.0" mass="0.136722260006395" diaginertia="6.66154088319108e-05 5.70155602172065e-05 7.80651315888766e-05" />
             <geom name="thigh_L_visual" pos="0 0 0" quat="1.0 0.0 0.0 0.0" material="empty" type="mesh" mesh="thigh_L.STL" class="visual" />
             <body name="ankle_L" pos="-0.08 0 0.00091912" quat="1.0 0.0 0.0 0.0">
-              <joint name="left_knee" class="motor" axis="0 0 1" />
+              <joint name="left_knee" class="motor" axis="0 0 -1" />
               <inertial pos="-0.0512148624990723 0.000164903632732805 0.0240133161649936" quat="1.0 0.0 0.0 0.0" mass="0.078372120714946" diaginertia="1.46395230049244e-05 2.33737111178945e-05 1.75499317087815e-05" />
               <geom name="ankle_L_visual" pos="0 0 0" quat="1.0 0.0 0.0 0.0" material="empty" type="mesh" mesh="ankle_L.STL" class="visual" />
               <body name="foot_L" pos="-0.08 0 0" quat="0.7071054825112363 0.0 0.0 0.7071080798594735">
-                <joint name="left_ankle"  class="motor" axis="0 0 1" />
+                <joint name="left_ankle"  class="motor" axis="0 0 -1" />
                 <inertial pos="0.00575759314533464 0.0248407158750149 0.0240910582815914" quat="1.0 0.0 0.0 0.0" mass="0.0777097222802103" diaginertia="2.96195805200132e-05 7.15756259940464e-05 5.79961491525299e-05" />
                 <geom name="foot_L_collision" pos="0 0 0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="foot_L.STL" class="collision" />
                 <geom name="foot_L_visual" pos="0 0 0" quat="1.0 0.0 0.0 0.0" material="empty" type="mesh" mesh="foot_L.STL" class="visual" />
